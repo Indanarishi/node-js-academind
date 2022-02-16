@@ -1,0 +1,5 @@
+- What is Node JS ?
+    - Node JS is a JavaScript runtime.
+    - Node JS is a different version of JavaScript, it is basically built on JavaScript, and takes JavaScript and
+      puts it into a different environment.
+    - Node JS allows us to run JavaScript code on the server.
