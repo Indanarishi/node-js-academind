@@ -9,6 +9,10 @@ const shopRoutes = require('./routes/shop')
 // init express
 const app = express()
 
+// app set allows us to set any values globally on our express application
+app.set('view engine', 'pug')
+app.set('views', 'views')
+
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(express.static(path.join(__dirname, 'public')))
 
