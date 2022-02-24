@@ -10,7 +10,11 @@ const shopRoutes = require('./routes/shop')
 const app = express()
 
 // handlebars
-app.engine('hbs', expressHbs())
+app.engine('hbs', expressHbs({
+    layoutsDir: 'views/layouts/', 
+    defaultLayout: 'main-layout', 
+    extname: 'hbs' 
+}))
 // app set allows us to set any values globally on our express application
 app.set('view engine', 'hbs')
 app.set('views', 'views')
