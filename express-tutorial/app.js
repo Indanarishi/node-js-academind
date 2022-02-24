@@ -1,6 +1,6 @@
-const http = require('http')
 const express = require('express')
 const bodyParser = require('body-parser')
+const expressHbs = require('express-handlebars')
 const path = require('path')
 
 const adminData = require('./routes/admin')
@@ -9,8 +9,10 @@ const shopRoutes = require('./routes/shop')
 // init express
 const app = express()
 
+// handlebars
+app.engine('hbs', expressHbs())
 // app set allows us to set any values globally on our express application
-app.set('view engine', 'pug')
+app.set('view engine', 'hbs')
 app.set('views', 'views')
 
 app.use(bodyParser.urlencoded({extended: false}))
