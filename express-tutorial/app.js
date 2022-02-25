@@ -5,6 +5,8 @@ const path = require('path')
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
 
+const errorController = require('./controllers/error')
+
 // init express
 const app = express()
 
@@ -19,9 +21,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/admin', adminRoutes)
 app.use(shopRoutes)
 
-app.use((req, res, next) => {
-    res.render('404', {docTitle: '404 | Page Not Found'})
-})
+app.use(errorController.get404)
 
 // create server
 app.listen(3000)
