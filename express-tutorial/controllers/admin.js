@@ -1,21 +1,49 @@
 const Product = require('../models/product')
 
 exports.getAddProduct = (req, res, next) => {
-    res.render('admin/add-product', {
+    res.render('admin/edit-product', {
         docTitle: 'Add Product', 
         path: '/admin/add-product',
-        formCSS: true,
-        productCSS: true,
-        activeAddProduct: true
+        editing: false
     })
 }
 
 exports.postAddProduct = (req, res, next) => {
     const { title, imageUrl, price, desc } = req.body
 
-    const product = new Product(title, imageUrl, price, desc)
+    const product = new Product(null, title, imageUrl, price, desc)
     product.save()
     res.redirect('/')
+}
+
+exports.getEditProduct = (req, res, next) => {
+    const editMode = req.query.edit
+    const prodId = req.params.productId
+    if (!editMode) {
+        return res.redirect('/')
+    }
+    Product.findById(prodId, (product) => {
+        if (!product) {
+            return res.redirect('/')
+        }
+        res.render('admin/edit-product', {
+            docTitle: 'Edit Product', 
+            path: '/admin/edit-product',
+            editing: editMode,
+            product
+        })
+    })
+}
+
+exports.postEditProduct = (req, res, next) => {
+    const prodId = req.body.productId
+    const updatedTitle = req.body.title
+    const updatedPrice = req.body.price
+    const updatedImageUrl = req.body.imageUrl
+    const updatedDesc = req.body.desc
+    const updatedProduct = new Product(prodId, updatedTitle, updatedImageUrl, updatedPrice, updatedDesc)
+    updatedProduct.save()
+    res.redirect('/admin/products')
 }
 
 exports.getProducts = (req, res, next) => {
