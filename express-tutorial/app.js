@@ -7,6 +7,8 @@ const shopRoutes = require('./routes/shop')
 
 const errorController = require('./controllers/error')
 const sequelize = require('./util/database')
+const Product = require('./models/product')
+const User = require('./models/user')
 
 // init express
 const app = express()
@@ -24,8 +26,17 @@ app.use(shopRoutes)
 
 app.use(errorController.get404)
 
+// relation between product and user
+Product.belongsTo(User, {
+    constraints: true,
+    onDelete: 'CASCADE'
+})
+
+User.hasMany(Product)
+
 // sync our models to the database by creating the tables
-sequelize.sync()
+sequelize
+    .sync({ force: true })
     .then(res => {
         // console.log(res)
         app.listen(3000)
