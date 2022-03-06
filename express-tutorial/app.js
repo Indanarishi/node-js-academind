@@ -20,6 +20,16 @@ app.set('views', 'views')
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(express.static(path.join(__dirname, 'public')))
 
+// middleware registered
+app.use((req, res, next) => {
+    User.findByPk(1)
+        .then(user => {
+            req.user = user
+            next()
+        })
+        .catch(err => console.log(err))
+})
+
 // routes
 app.use('/admin', adminRoutes)
 app.use(shopRoutes)
@@ -36,9 +46,19 @@ User.hasMany(Product)
 
 // sync our models to the database by creating the tables
 sequelize
-    .sync({ force: true })
+    .sync()
     .then(res => {
+        return User.findByPk(1)
         // console.log(res)
+    })
+    .then(user => {
+        if (!user) {
+            return User.create({ name: 'Indana', email: 'indana@test.com' })
+        }
+        return user
+    })
+    .then(user => {
+        // console.log(user)
         app.listen(3000)
     })
     .catch(err => {
