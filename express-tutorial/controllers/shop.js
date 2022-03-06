@@ -123,8 +123,11 @@ exports.postCartDeleteProduct = (req, res, next) => {
 }
 
 exports.postOrders = (req, res, next) => {
+    let fetchedCart
+
     req.user.getCart()
         .then(cart => {
+            fetchedCart = cart
             return cart.getProducts()
         })
         .then(products => {
@@ -134,6 +137,9 @@ exports.postOrders = (req, res, next) => {
                         product.orderItem = { quantity: product.cartItem.quantity }
                         return product
                     }))
+                })
+                .then(result => {
+                    fetchedCart.setProducts(null)
                 })
                 .then(result => {
                     res.redirect('/orders')
