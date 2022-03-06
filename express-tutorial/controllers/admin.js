@@ -11,17 +11,18 @@ exports.getAddProduct = (req, res, next) => {
 exports.postAddProduct = (req, res, next) => {
     const { title, imageUrl, price, desc } = req.body
 
-    Product.create({
-        title,
-        price,
-        imageUrl,
-        desc
-    })
-    .then(result => {
-        console.log('Product Created')
-        res.redirect('/admin/products')
-    })
-    .catch(err => console.log(err))
+    req.user
+        .createProduct({
+            title,
+            price,
+            imageUrl,
+            desc
+        })
+        .then(result => {
+            console.log('Product Created')
+            res.redirect('/admin/products')
+        })
+        .catch(err => console.log(err))
 }
 
 exports.getEditProduct = (req, res, next) => {
